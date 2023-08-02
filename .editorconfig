@@ -1,0 +1,15 @@
+root = true
+
+[*]
+end_of_line = lf
+ident_style = space
+indent_size = 4
+insert_final_newline = false
+charset = utf-8
+trim_trailing_whitespace = true
+
+[*.yml]
+ident_size = 2
+
+[*.{java,json,yml,xml,md}]
+insert_final_newline = true
