@@ -1,4 +1,4 @@
-package com.codurance.atm;
+package com.codurance.atm.tld;
 
 import com.codurance.atm.account.Account;
 import com.codurance.atm.account.AccountService;

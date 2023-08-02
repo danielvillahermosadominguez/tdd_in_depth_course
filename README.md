@@ -29,3 +29,12 @@ We have added to the pom.xml the following dependency:
       have some commented code.
     - The code, sometimes is confuse, because we can see some methods which don't do what they say to do.
 
+## Task: ATM Acceptance test
+
+- I think the most difficult is to test a feature which doesn't exist in the code. Really,
+  the acceptance criteria is not covered for this production code. The acceptance test has
+  verified this.
+- Other difficult part is to test the input and the output. I have emulated the input and I
+  have catched the output with a ByteArrayInputStream and ByteArrayOutputStream, restoring the
+  system output and input after each test.
+- The Acceptance test is failing because the right reason. The feature is not implemented yet.
