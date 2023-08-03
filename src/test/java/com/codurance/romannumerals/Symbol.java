@@ -24,4 +24,12 @@ public class Symbol {
     public int getNumber() {
         return number;
     }
+
+    public int subtract(int rest) {
+        return rest - number;
+    }
+
+    public int subtract(Symbol symbol) {
+        return number - symbol.getNumber();
+    }
 }

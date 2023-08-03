@@ -44,6 +44,11 @@ public class RomanNumeralsShould {
         "1000, M",
     })
     void convert_to_roman_number(int number, String expectedRomanNumber) {
-        assertEquals(expectedRomanNumber, RomanNumerals.convert(number));
+        SymbolTable symbols = new SymbolTable();
+        RomanNumeralsConverter converter = new RomanNumeralsConverter(symbols);
+
+        String romanNumber = converter.convert(number);
+
+        assertEquals(expectedRomanNumber, romanNumber);
     }
 }
