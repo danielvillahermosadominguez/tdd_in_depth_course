@@ -15,7 +15,7 @@ public class SymbolTable {
         put(1, new Symbol(1, "I"));
     }};
 
-    public List<Symbol> getSortedSymbols() {
+    public List<Symbol> getSymbols() {
         return new ArrayList<>(symbols.values());
     }
 
@@ -47,7 +47,7 @@ public class SymbolTable {
     }
 
     private Symbol getPreviousSymbol(Integer number, int positions) {
-        List<Symbol> list = getSortedSymbols();
+        List<Symbol> list = getSymbols();
         Optional<Symbol> symbol = list.stream()
             .filter(item -> item.getNumber() == number)
             .findFirst();

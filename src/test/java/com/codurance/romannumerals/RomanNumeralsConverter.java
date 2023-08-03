@@ -10,19 +10,23 @@ public class RomanNumeralsConverter {
     public String convert(Integer number) {
         int rest = number;
 
-        for (Symbol current : symbols.getSortedSymbols()) {
-            if (current.isBiggerOrEqual(rest)) {
+        for (Symbol current : symbols.getSymbols()) {
+            if (rest >= current.getNumber()) {
                 rest = current.subtract(rest);
                 return current.getRomanNumeral() + convert(rest);
             }
 
             Symbol previous = symbols.getPreviousSymbol(current);
-            if (current.isBetween(rest, previous)) {
+            if (isBetween(rest, current, previous)) {
                 rest -= current.subtract(previous);
                 Symbol dynamicSymbol = symbols.combine(previous, current);
                 return dynamicSymbol.getRomanNumeral() + convert(rest);
             }
         }
         return "";
+    }
+
+    private boolean isBetween(int rest, Symbol left, Symbol right) {
+        return (right != null) && (rest >= (left.getNumber() - right.getNumber()));
     }
 }
