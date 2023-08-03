@@ -1,31 +1,37 @@
 package com.codurance.calculator;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CalculatorShould {
-    @Test
-    void returns_the_sum_of_two_numbers() {
-        //Arrange
-        Calculator calculator = new Calculator();
+    private Calculator calculator;
 
-        //Act
-        int result = calculator.add(2, 3);
+    @BeforeEach
+    void beforeEach() {
+        calculator = new Calculator();
 
-        //Assert
-        assertEquals(5, result);
     }
 
-    @Test
-    void returns_the_substraction_of_two_numbers() {
-        //Arrange
-        Calculator calculator = new Calculator();
+    @ParameterizedTest
+    @CsvSource({
+        "2,3,5",
+        "4,5,9",
+        "9,10,19"
+    })
+    void returns_the_sum_of_two_numbers(int a, int b, int expectedResult) {
+        assertEquals(expectedResult, calculator.add(a, b));
+    }
 
-        //Act
-        int result = calculator.sub(3, 2);
-
-        //Assert
-        assertEquals(1, result);
+    @ParameterizedTest
+    @CsvSource({
+        "3,2,1",
+        "5,3,2",
+        "10,5,5"
+    })
+    void returns_the_substraction_of_two_numbers(int a, int b, int expectedResult) {
+        assertEquals(expectedResult, calculator.sub(a, b));
     }
 }
