@@ -38,3 +38,4 @@ We have added to the pom.xml the following dependency:
   have catched the output with a ByteArrayInputStream and ByteArrayOutputStream, restoring the
   system output and input after each test.
 - The Acceptance test is failing because the right reason. The feature is not implemented yet.
+
