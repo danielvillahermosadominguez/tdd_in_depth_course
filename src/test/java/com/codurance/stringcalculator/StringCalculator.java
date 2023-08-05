@@ -8,7 +8,10 @@ import java.util.Locale;
 
 public class StringCalculator {
 
+    public static final char NEW_LINE = '\n';
+    public static final String CUSTOM_SEPARATOR_BODY_PATTERN = "(.*)\n(.|\n)*";
     private static final String DECIMAL_PATTERN = "##.#";
+    private String CUSTOM_SEPARATOR_TOKEN = "//";
     private String delimiter = ",";
 
     public String add(String number) {
@@ -16,11 +19,7 @@ public class StringCalculator {
             return format(0);
         }
 
-        if (number.matches("//(.*)\n(.|\n)*")) {
-            int pos = number.indexOf('\n');
-            delimiter = number.substring(2, pos);
-            number = number.substring(pos + 1, number.length());
-        }
+        number = checkCustomSeparators(number);
 
         checkNewLine(number);
         checkWrongCharacters(number);
@@ -36,18 +35,27 @@ public class StringCalculator {
         );
     }
 
+    private String checkCustomSeparators(String number) {
+        if (number.matches(CUSTOM_SEPARATOR_TOKEN + CUSTOM_SEPARATOR_BODY_PATTERN)) {
+            int pos = number.indexOf(NEW_LINE);
+            delimiter = number.substring(CUSTOM_SEPARATOR_TOKEN.length(), pos);
+            number = number.substring(pos + 1, number.length());
+        }
+        return number;
+    }
+
     private void checkNotExpectedEOF(String number) {
         String lastChar = number.charAt(number.length() - 1) + "";
-        if (lastChar.equals(delimiter) || lastChar.equals("\n")) {
+        if (lastChar.equals(delimiter) || lastChar.equals(NEW_LINE + "")) {
             throw new WrongFormat("Number expected but EOF found.");
         }
     }
 
     private void checkWrongCharacters(String number) {
         if (delimiter.equals("|")) {
-            delimiter = "//|";
+            delimiter = CUSTOM_SEPARATOR_TOKEN + "|";
         }
-        String[] numbers = number.split("[" + delimiter + "\n]");
+        String[] numbers = number.split("[" + delimiter + NEW_LINE + "]");
         int position = 0;
         for (String text : numbers) {
             checkUnexpectedCharacter(position, text);
