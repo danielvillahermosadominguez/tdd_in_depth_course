@@ -57,10 +57,25 @@ public class StringCalculator {
         }
         String[] numbers = number.split("[" + delimiter + NEW_LINE + "]");
         int position = 0;
+        String negativeNumbers = "";
         for (String text : numbers) {
+            if (isNegativeNumber(text)) {
+                negativeNumbers += " " + text + ",";
+            }
+        }
+        if (!negativeNumbers.isEmpty()) {
+            negativeNumbers = negativeNumbers.substring(0, negativeNumbers.length() - 1);
+            throw new WrongFormat("Negative not allowed :" + negativeNumbers);
+        }
+        for (String text : numbers) {
+            isNegativeNumber(text);
             checkUnexpectedCharacter(position, text);
             position += text.length();
         }
+    }
+
+    private boolean isNegativeNumber(String text) {
+        return text.matches("^-\\d*\\.?\\d+$");
     }
 
     private void checkUnexpectedCharacter(int position, String text) {

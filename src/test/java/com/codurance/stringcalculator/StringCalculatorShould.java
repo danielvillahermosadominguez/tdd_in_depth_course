@@ -62,4 +62,19 @@ public class StringCalculatorShould {
             ex.getMessage()
         );
     }
+
+    @ParameterizedTest
+    @CsvSource({
+        "'-1,2','-1'",
+        "'2,-4,-5','-4, -5'"
+    })
+    void throw_an_exception_when_the_format_is_not_correct_Negative_not_allowed(String number, String negNumber) {
+        Exception ex = assertThrows(WrongFormat.class, () -> {
+            calculator.add(number);
+        });
+        assertEquals(
+            "Negative not allowed : " + negNumber,
+            ex.getMessage()
+        );
+    }
 }
