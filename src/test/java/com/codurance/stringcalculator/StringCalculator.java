@@ -22,6 +22,7 @@ public class StringCalculator {
         number = checkCustomSeparators(number);
 
         checkNewLine(number);
+        checkNegativeNumbers(number);
         checkWrongCharacters(number);
         checkNotExpectedEOF(number);
 
@@ -51,12 +52,8 @@ public class StringCalculator {
         }
     }
 
-    private void checkWrongCharacters(String number) {
-        if (delimiter.equals("|")) {
-            delimiter = CUSTOM_SEPARATOR_TOKEN + "|";
-        }
-        String[] numbers = number.split("[" + delimiter + NEW_LINE + "]");
-        int position = 0;
+    private void checkNegativeNumbers(String number) {
+        String[] numbers = splitWithDelimiter(number);
         String negativeNumbers = "";
         for (String text : numbers) {
             if (isNegativeNumber(text)) {
@@ -67,6 +64,19 @@ public class StringCalculator {
             negativeNumbers = negativeNumbers.substring(0, negativeNumbers.length() - 1);
             throw new WrongFormat("Negative not allowed :" + negativeNumbers);
         }
+    }
+
+    private String[] splitWithDelimiter(String number) {
+        if (delimiter.equals("|")) {
+            delimiter = CUSTOM_SEPARATOR_TOKEN + "|";
+        }
+        String[] numbers = number.split("[" + delimiter + NEW_LINE + "]");
+        return numbers;
+    }
+
+    private void checkWrongCharacters(String number) {
+        String[] numbers = splitWithDelimiter(number);
+        int position = 0;
         for (String text : numbers) {
             isNegativeNumber(text);
             checkUnexpectedCharacter(position, text);
