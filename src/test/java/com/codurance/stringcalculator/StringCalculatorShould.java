@@ -33,16 +33,17 @@ public class StringCalculatorShould {
 
     @ParameterizedTest
     @CsvSource({
-        "'175.2,\n35','\\n'",
-        "'//|\n1|2,3',','"
+        "'//|\n175.2|\n35','\\n',6",
+        "'175.2,\n35','\\n',6",
+        "'//|\n1|2,3',',',3"
     })
-    void throw_an_exception_when_the_format_is_not_correct_no_expected_character(String number, String character) {
+    void throw_an_exception_when_the_format_is_not_correct_no_expected_character(String number, String character, int position) {
         Exception ex = assertThrows(WrongFormat.class, () -> {
             calculator.add(number);
         });
 
         assertEquals(
-            "Number expected but '" + character + "' found at position 6.",
+            "Number expected but '" + character + "' found at position " + position + ".",
             ex.getMessage()
         );
     }

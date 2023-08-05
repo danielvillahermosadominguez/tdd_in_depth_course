@@ -16,12 +16,13 @@ public class StringCalculator {
             return format(0);
         }
 
-        if (number.matches("//(.*)\n(.*)")) {
+        if (number.matches("//(.*)\n(.|\n)*")) {
             int pos = number.indexOf('\n');
             delimiter = number.substring(2, pos);
             number = number.substring(pos + 1, number.length());
         }
 
+        checkNewLine(number);
         checkWrongCharacters(number);
         checkNotExpectedEOF(number);
 
@@ -43,10 +44,31 @@ public class StringCalculator {
     }
 
     private void checkWrongCharacters(String number) {
-        String[] numbers = number.split(delimiter);
+        if (delimiter.equals("|")) {
+            delimiter = "//|";
+        }
+        String[] numbers = number.split("[" + delimiter + "\n]");
+        int position = 0;
+        for (String text : numbers) {
+            checkUnexpectedCharacter(position, text);
+            position += text.length();
+        }
+    }
+
+    private void checkUnexpectedCharacter(int position, String text) {
+        int pos = 0;
+        for (char c : text.toCharArray()) {
+            if (!Character.isDigit(c) && c != '.') {
+                throw new WrongFormat("Number expected but '" + c + "' found at position " + (position + pos + 1) + ".");
+            }
+            pos++;
+        }
+    }
+
+    private void checkNewLine(String number) {
         int pos = number.indexOf(delimiter + "\n");
         if (pos != -1) {
-            throw new WrongFormat("Number expected but '\\n' found at position " + (pos + 1) + ".");
+            throw new WrongFormat("Number expected but '\\n' found at position " + (pos + delimiter.length()) + ".");
         }
     }
 
