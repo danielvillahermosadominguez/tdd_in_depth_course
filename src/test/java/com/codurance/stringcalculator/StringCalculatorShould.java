@@ -2,92 +2,29 @@ package com.codurance.stringcalculator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class StringCalculatorShould {
 
+    StringCalculatorParser parser;
     StringCalculator calculator = null;
 
     @BeforeEach
     void beforeEach() {
-        calculator = new StringCalculator();
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "'',0",
-        "1,1",
-        "'1.1,2.2',3.3",
-        "'1.32,2.34',3.7",
-        "'1,2.34,3,4,5.1',15.4",
-        "'1\n2,3',6",
-        "'//;\n1;2',3",
-        "'//sep\n2sep3',5"
-    })
-    void return_the_sum_of_numbers(String number, String expectedResult) {
-        assertEquals(expectedResult, calculator.add(number));
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "'//|\n175.2|\n35','\\n',6",
-        "'175.2,\n35','\\n',6",
-        "'//|\n1|2,3',',',3"
-    })
-    void throw_an_exception_when_the_format_is_not_correct_no_expected_character(String number, String character, int position) {
-        Exception ex = assertThrows(WrongFormat.class, () -> {
-            calculator.add(number);
-        });
-
-        assertEquals(
-            "Number expected but '" + character + "' found at position " + position + ".",
-            ex.getMessage()
-        );
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "','",
-        "'\n'",
-    })
-    void throw_an_exception_when_the_format_is_not_correct_EOF_not_expected(String lastChar) {
-        Exception ex = assertThrows(WrongFormat.class, () -> {
-            calculator.add("1,3" + lastChar);
-        });
-        assertEquals(
-            "Number expected but EOF found.",
-            ex.getMessage()
-        );
-    }
-
-    @ParameterizedTest
-    @CsvSource({
-        "'-1,2','-1'",
-        "'2,-4,-5','-4, -5'"
-    })
-    void throw_an_exception_when_the_format_is_not_correct_Negative_not_allowed(String number, String negNumber) {
-        Exception ex = assertThrows(WrongFormat.class, () -> {
-            calculator.add(number);
-        });
-        assertEquals(
-            "Negative not allowed : " + negNumber,
-            ex.getMessage()
-        );
+        parser = mock();
+        calculator = new StringCalculator(parser);
     }
 
     @Test
-    void throw_an_exception_when_the_expresion_has_multiple_errors() {
-        Exception ex = assertThrows(WrongFormat.class, () -> {
-            calculator.add("-1,,2");
-        });
-        assertEquals(
-            "Negative not allowed : -1\n" +
-                "Number expected but ',' found at position 3.",
-            ex.getMessage()
-        );
+    void return_the_sum_of_numbers() {
+        when(parser.parse(any())).thenReturn(Arrays.asList(1.0, 2.0, 3.0, 4.0));
+
+        assertEquals("10", calculator.add("1,2,3\n4"));
     }
 }
