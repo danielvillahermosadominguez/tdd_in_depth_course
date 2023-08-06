@@ -1,6 +1,7 @@
 package com.codurance.stringcalculator;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -74,6 +75,18 @@ public class StringCalculatorShould {
         });
         assertEquals(
             "Negative not allowed : " + negNumber,
+            ex.getMessage()
+        );
+    }
+
+    @Test
+    void throw_an_exception_when_the_expresion_has_multiple_errors() {
+        Exception ex = assertThrows(WrongFormat.class, () -> {
+            calculator.add("-1,,2");
+        });
+        assertEquals(
+            "Negative not allowed : -1\n" +
+                "Number expected but ',' found at position 3.",
             ex.getMessage()
         );
     }
