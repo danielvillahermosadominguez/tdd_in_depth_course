@@ -1,19 +1,23 @@
-package com.codurance.stringcalculator.rules;
+package com.codurance.stringcalculator.validation;
 
-import com.codurance.stringcalculator.Expression;
+import com.codurance.stringcalculator.calculator.Expression;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NegativeNumbersRule extends ValidationRule {
+
+    public static final String SPACE = " ";
+    public static final String COMMA = ",";
+
     @Override
     public List<String> verify(Expression expression) {
         List<String> result = new ArrayList<>();
-        String[] numbers = expression.getTokens();
+        List<String> numbers = expression.getTokens();
         String negativeNumbers = "";
         for (String text : numbers) {
             if (isNegativeNumber(text)) {
-                negativeNumbers += " " + text + ",";
+                negativeNumbers += SPACE + text + COMMA;
             }
         }
 

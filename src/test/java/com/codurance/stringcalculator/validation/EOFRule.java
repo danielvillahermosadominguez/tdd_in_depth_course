@@ -1,6 +1,6 @@
-package com.codurance.stringcalculator.rules;
+package com.codurance.stringcalculator.validation;
 
-import com.codurance.stringcalculator.Expression;
+import com.codurance.stringcalculator.calculator.Expression;
 
 import java.util.ArrayList;
 import java.util.List;

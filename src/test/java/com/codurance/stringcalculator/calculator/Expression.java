@@ -1,4 +1,7 @@
-package com.codurance.stringcalculator;
+package com.codurance.stringcalculator.calculator;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class Expression {
     public static final char NEW_LINE = '\n';
@@ -9,6 +12,10 @@ public class Expression {
 
     private String delimiter = COMMA_SYMBOL;
     private String value = "";
+
+    public Expression(String value) {
+        setValue(value);
+    }
 
     public String getDelimiter() {
         return delimiter;
@@ -28,12 +35,18 @@ public class Expression {
         }
     }
 
-    public String[] getTokens() {
-        String formatedText = getValue();
-        if (delimiter.equals(this.PIPE_SYMBOL)) {
-            return formatedText.split("[" + CUSTOM_SEPARATOR_TOKEN + delimiter + NEW_LINE + "]");
+    public List<String> getTokens() {
+        if (value.isEmpty()) {
+            return Arrays.asList();
         }
 
-        return formatedText.split(delimiter + PIPE_SYMBOL + NEW_LINE);
+        String regex = "";
+        if (delimiter.equals(this.PIPE_SYMBOL)) {
+            regex = "[" + CUSTOM_SEPARATOR_TOKEN + delimiter + NEW_LINE + "]";
+        } else {
+            regex = delimiter + PIPE_SYMBOL + NEW_LINE;
+        }
+
+        return Arrays.asList(value.split(regex));
     }
 }

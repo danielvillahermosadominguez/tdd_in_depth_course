@@ -1,9 +1,10 @@
 package com.codurance.stringcalculator;
 
+import com.codurance.stringcalculator.calculator.Expression;
+import com.codurance.stringcalculator.calculator.StringCalculator;
+import com.codurance.stringcalculator.validation.StringCalculatorValidator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -12,19 +13,21 @@ import static org.mockito.Mockito.when;
 
 public class StringCalculatorShould {
 
-    StringCalculatorParser parser;
+    StringCalculatorValidator validator;
     StringCalculator calculator = null;
 
     @BeforeEach
     void beforeEach() {
-        parser = mock();
-        calculator = new StringCalculator(parser);
+        validator = mock();
+        calculator = new StringCalculator(validator);
     }
 
     @Test
     void return_the_sum_of_numbers() {
-        when(parser.parse(any())).thenReturn(Arrays.asList(1.0, 2.0, 3.0, 4.0));
+        when(validator.verify(any())).thenReturn(true);
 
-        assertEquals("10", calculator.add("1,2,3\n4"));
+        Expression expression = new Expression("1,2,3\n4");
+        Expression result = calculator.add(expression);
+        assertEquals("10", result.getValue());
     }
 }
