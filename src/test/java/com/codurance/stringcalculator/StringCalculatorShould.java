@@ -30,4 +30,13 @@ public class StringCalculatorShould {
         Expression result = calculator.add(expression);
         assertEquals("10", result.getValue());
     }
+
+    @Test
+    void return_the_multiplication_of_numbers() {
+        when(validator.verify(any())).thenReturn(true);
+
+        Expression expression = new Expression("1,2,3\n4");
+        Expression result = calculator.multiply(expression);
+        assertEquals("24", result.getValue());
+    }
 }
