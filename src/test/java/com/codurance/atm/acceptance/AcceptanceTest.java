@@ -20,6 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class AcceptanceTest {
+    public static final String ACCOUNT_NUMBER = "123456";
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
@@ -57,19 +58,20 @@ public class AcceptanceTest {
     void acceptance_test_of_the_course() {
         //Given there's an Account with number 123456, PIN 123456 and balance 100
         InputStream sysInBackup = System.in;
-        System.setIn(new ByteArrayInputStream("123456\n123456\n1\n1\n".getBytes()));
-        Account initialAccount = new Account("123456", 100);
-        Account expectedAccount = new Account("123456", 50);
-        AccountService accountService = mock();
-        when(accountService.findBy("123456", "123456")).thenReturn(initialAccount);
-        when(accountService.withdraw("123456", 50)).thenReturn(expectedAccount);
         //And I entered 123456 as Account number and 123456 as PIN
+        System.setIn(new ByteArrayInputStream("123456\n123456\n1\n1\n".getBytes()));
+        Account initialAccount = new Account(ACCOUNT_NUMBER, 100);
+        Account expectedAccount = new Account(ACCOUNT_NUMBER, 50);
+        AccountService accountService = mock();
+        when(accountService.findBy(ACCOUNT_NUMBER, ACCOUNT_NUMBER)).thenReturn(initialAccount);
+        when(accountService.withdraw(ACCOUNT_NUMBER, 50)).thenReturn(expectedAccount);
+
+        //When I withdraw 50
         AtmSimulator atmSimulator = new AtmSimulator(
             new WelcomeScreen(
                 new CliPrompt(System.in, new ConsolePrinter()),
                 accountService));
         atmSimulator.showScreen();
-        //When I withdraw 50
 
         //Then I should see the message "Your current balance is 50".
         assertEquals(expectedOutput, getFormattedOutput());
