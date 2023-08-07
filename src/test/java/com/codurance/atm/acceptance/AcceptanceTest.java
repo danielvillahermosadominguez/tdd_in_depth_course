@@ -2,7 +2,9 @@ package com.codurance.atm.acceptance;
 
 import com.codurance.atm.AtmSimulator;
 import com.codurance.atm.account.Account;
+import com.codurance.atm.account.AccountNumber;
 import com.codurance.atm.account.AccountService;
+import com.codurance.atm.account.NotValidAccountNumber;
 import com.codurance.atm.infrastructure.CliPrompt;
 import com.codurance.atm.infrastructure.ConsolePrinter;
 import com.codurance.atm.screens.WelcomeScreen;
@@ -16,6 +18,8 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -30,7 +34,7 @@ public class AcceptanceTest {
         "1. Withdraw\n" +
         "2. Fund Transfer\n" +
         "3. Exit\n" +
-        "Please choose option [3]: Account number {0}, balance {1}\n" +
+        "Please choose option [3]: Options:\n" +
         "1. $10\n" +
         "2. $50\n" +
         "3. $100\n" +
@@ -55,16 +59,17 @@ public class AcceptanceTest {
     }
 
     @Test
-    void acceptance_test_of_the_course() {
+    void acceptance_test_of_the_course() throws NotValidAccountNumber {
         //Given there's an Account with number 123456, PIN 123456 and balance 100
         InputStream sysInBackup = System.in;
         //And I entered 123456 as Account number and 123456 as PIN
         System.setIn(new ByteArrayInputStream("123456\n123456\n1\n1\n".getBytes()));
-        Account initialAccount = new Account(ACCOUNT_NUMBER, 100);
-        Account expectedAccount = new Account(ACCOUNT_NUMBER, 50);
+        AccountNumber accountNumber = new AccountNumber(ACCOUNT_NUMBER);
+        Account initialAccount = new Account(accountNumber, 100);
+        Account expectedAccount = new Account(accountNumber, 50);
         AccountService accountService = mock();
-        when(accountService.findBy(ACCOUNT_NUMBER, ACCOUNT_NUMBER)).thenReturn(initialAccount);
-        when(accountService.withdraw(ACCOUNT_NUMBER, 50)).thenReturn(expectedAccount);
+        when(accountService.findBy(any(), any())).thenReturn(initialAccount);
+        when(accountService.withdraw(any(), anyInt())).thenReturn(expectedAccount);
 
         //When I withdraw 50
         AtmSimulator atmSimulator = new AtmSimulator(

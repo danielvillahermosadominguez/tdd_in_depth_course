@@ -1,8 +1,6 @@
 package com.codurance.atm.screens;
 
-import com.codurance.atm.account.Account;
-import com.codurance.atm.account.AccountService;
-import com.codurance.atm.account.InvalidAccountPin;
+import com.codurance.atm.account.*;
 import com.codurance.atm.infrastructure.CliPrompt;
 
 public class WelcomeScreen implements Screen {
@@ -10,14 +8,14 @@ public class WelcomeScreen implements Screen {
     private final AccountService accountService;
 
     private String pin;
-    private String accountNumber;
+    private AccountNumber accountNumber;
 
     public WelcomeScreen(CliPrompt cliPrompt, AccountService accountService) {
         this.cliPrompt = cliPrompt;
         this.accountService = accountService;
     }
 
-    public Screen show() {
+    public Screen show() throws NotValidAccountNumber {
         Account account = askAccountNumber();
         return new TransactionScreen(cliPrompt, account, accountService);
     }
@@ -27,10 +25,16 @@ public class WelcomeScreen implements Screen {
         return ScreenEnum.WELCOME_SCREEN;
     }
 
-    private Account askAccountNumber() {
+    private Account askAccountNumber() throws NotValidAccountNumber {
+        boolean isInvalid = true;
         do {
-            accountNumber = cliPrompt.accountNumber();
-        } while (isInvalid(accountNumber));
+            try {
+                accountNumber = new AccountNumber(cliPrompt.accountNumber());
+                isInvalid = false;
+            } catch (NotValidAccountNumber exception) {
+                cliPrompt.promptGenericMessage(exception.getMessage() + "\n");
+            }
+        } while (isInvalid);
         return askPin();
     }
 
@@ -46,7 +50,7 @@ public class WelcomeScreen implements Screen {
         return false;
     }
 
-    private Account askPin() {
+    private Account askPin() throws NotValidAccountNumber {
         do {
             pin = cliPrompt.pin();
         } while (isInvalidPIN(pin));
@@ -56,7 +60,7 @@ public class WelcomeScreen implements Screen {
         return account;
     }
 
-    private Account findAccount(String accountNumber, String pin) {
+    private Account findAccount(AccountNumber accountNumber, String pin) {
         try {
             return accountService.findBy(accountNumber, pin);
         } catch (InvalidAccountPin e) {

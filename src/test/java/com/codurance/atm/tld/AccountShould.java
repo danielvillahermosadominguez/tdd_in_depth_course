@@ -1,15 +1,17 @@
 package com.codurance.atm.tld;
 
 import com.codurance.atm.account.Account;
+import com.codurance.atm.account.AccountNumber;
+import com.codurance.atm.account.NotValidAccountNumber;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AccountShould {
     @Test
-    void should_persiste_a_balance() {
+    void should_persiste_a_balance() throws NotValidAccountNumber {
         //Arrange
-        String accountNumber = "RANDOM_ACCOUNT_NUMBER";
+        AccountNumber accountNumber = new AccountNumber("123456");
         Integer balance = 10;
         String expectedBalance = "10";
         //Act
@@ -19,9 +21,9 @@ public class AccountShould {
     }
 
     @Test
-    void should_persiste_an_account_number() {
+    void should_persiste_an_account_number() throws NotValidAccountNumber {
         //Arrange
-        String accountNumber = "RANDOM_ACCOUNT_NUMBER";
+        AccountNumber accountNumber = new AccountNumber("123456");
         Integer balance = 10;
         //Act
         Account account = new Account(accountNumber, balance);

@@ -1,5 +1,7 @@
 package com.codurance.atm.infrastructure;
 
+import com.codurance.atm.account.AccountNumber;
+
 import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.Scanner;
@@ -14,7 +16,7 @@ public class CliPrompt {
     ;
 
     private static final String WITHDRAW_SCREEN_MENU =
-        "Account number {0}, balance {1}\n" +
+        "Options:\n" +
             "1. $10\n" +
             "2. $50\n" +
             "3. $100\n" +
@@ -41,8 +43,8 @@ public class CliPrompt {
         return scanner.next();
     }
 
-    public String transactionScreenMenu(String accountNumber, String balance) {
-        printer.prompt(MessageFormat.format(HOME_SCREEN_MENU, accountNumber, balance));
+    public String transactionScreenMenu(AccountNumber accountNumber, String balance) {
+        printer.prompt(MessageFormat.format(HOME_SCREEN_MENU, accountNumber.getValue(), balance));
         return scanner.next();
     }
 

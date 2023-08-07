@@ -1,16 +1,16 @@
 package com.codurance.atm.account;
 
 public class Account {
-    private String accountNumber;
+    private AccountNumber accountNumber;
     private Integer balance;
 
-    public Account(String accountNumber, Integer balance) {
+    public Account(AccountNumber accountNumber, Integer balance) {
 
         this.accountNumber = accountNumber;
         this.balance = balance;
     }
 
-    public String accountNumber() {
+    public AccountNumber accountNumber() {
         return accountNumber;
     }
 

@@ -1,11 +1,11 @@
 package com.codurance.atm.account;
 
 public class AccountService {
-    public Account findBy(String accountNumber, String pin) {
+    public Account findBy(AccountNumber accountNumber, String pin) {
         return new Account(accountNumber, 0);
     }
 
-    public Account withdraw(String accountNumber, int quantity) {
+    public Account withdraw(AccountNumber accountNumber, int quantity) {
         throw new UnsupportedOperationException();
     }
 }

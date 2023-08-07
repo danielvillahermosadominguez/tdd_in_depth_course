@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 
 public class CliPromtShould {
 
-    private String expectedMenu = "Account number {0}, balance {1}\n" +
+    private String expectedMenu = "Options:\n" +
         "1. $10\n" +
         "2. $50\n" +
         "3. $100\n" +
