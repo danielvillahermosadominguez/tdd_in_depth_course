@@ -4,4 +4,8 @@ public class AccountService {
     public Account findBy(String accountNumber, String pin) {
         return new Account(accountNumber, 0);
     }
+
+    public Account withdraw(String accountNumber, int quantity) {
+        throw new UnsupportedOperationException();
+    }
 }

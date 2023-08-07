@@ -58,3 +58,36 @@ TPP: https://en.wikipedia.org/wiki/Transformation_Priority_Premise
 - (expression → function) replacing an expression with a function or algorithm
 - (variable → assignment) replacing the value of a variable.
 - (case) adding a case (or else) to an existing switch or if
+
+## ATM - TDD II: Account Balance. Specific requirements decisions
+
+The decisions are based on the original code. Where we can see the balance is an integer in the
+Domain entity "Account"
+
+```java
+public class Account {
+    ..
+    private Integer balance;
+
+    public Account(String accountNumber, Integer balance) {
+        ..
+        this.balance = balance;
+    }
+
+    ..
+
+    public String balance() {
+        return balance.toString();
+    }
+}
+```
+
+To apply TDD for this change, I think we should reuse the Acceptation Test. In my case, I have seen this
+acceptance test doesn't work because the code is not working because there are several things not implemented.
+
+In addition, I think it makes not sense to apply TDD to anemic classes which they didn't have any behaviour. That
+is:
+
+- Account class. It is an entity class, there is not behaviour.
+- Balance class. (The)
+

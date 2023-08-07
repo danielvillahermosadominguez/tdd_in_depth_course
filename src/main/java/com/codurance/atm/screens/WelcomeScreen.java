@@ -1,8 +1,8 @@
 package com.codurance.atm.screens;
 
 import com.codurance.atm.account.Account;
-import com.codurance.atm.account.InvalidAccountPin;
 import com.codurance.atm.account.AccountService;
+import com.codurance.atm.account.InvalidAccountPin;
 import com.codurance.atm.infrastructure.CliPrompt;
 
 public class WelcomeScreen implements Screen {
@@ -19,7 +19,7 @@ public class WelcomeScreen implements Screen {
 
     public Screen show() {
         Account account = askAccountNumber();
-        return new TransactionScreen(cliPrompt, account);
+        return new TransactionScreen(cliPrompt, account, accountService);
     }
 
     @Override
@@ -28,14 +28,14 @@ public class WelcomeScreen implements Screen {
     }
 
     private Account askAccountNumber() {
-        do{
+        do {
             accountNumber = cliPrompt.accountNumber();
         } while (isInvalid(accountNumber));
         return askPin();
     }
 
     private boolean isInvalid(String accountNumber) {
-        if(!accountNumber.matches("\\d+")){
+        if (!accountNumber.matches("\\d+")) {
             cliPrompt.promptGenericMessage("Account Number should only contain numbers\n");
             return true;
         }
@@ -47,7 +47,7 @@ public class WelcomeScreen implements Screen {
     }
 
     private Account askPin() {
-        do{
+        do {
             pin = cliPrompt.pin();
         } while (isInvalidPIN(pin));
 
@@ -66,11 +66,11 @@ public class WelcomeScreen implements Screen {
     }
 
     private boolean isInvalidPIN(String pin) {
-        if(!pin.matches("\\d+")) {
+        if (!pin.matches("\\d+")) {
             cliPrompt.promptGenericMessage("PIN should only contain numbers\n");
             return true;
         }
-        if(pin.length() != 6) {
+        if (pin.length() != 6) {
             cliPrompt.promptGenericMessage("PIN should have 6 digits length\n");
             return true;
         }

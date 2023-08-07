@@ -30,30 +30,4 @@ public class WelcomeScreenShould {
         //Assert
         assertEquals(ScreenEnum.TRANSACTION, screen.screenName());
     }
-
-//    @Test
-//    void show_a_error_message_when_account_number_contain_chars() {
-//        //Arrange
-//        CliPrompt cliPrompt = mock(CliPrompt.class);
-//        Account expectedAccount = new Account("123456", 1000);
-//        AccountService accountService = mock(AccountService.class);
-//        WelcomeScreen welcomeScreen = new WelcomeScreen(cliPrompt, accountService);
-//        when(cliPrompt.accountNumber()).thenReturn("12345D");
-//        when(accountService.findBy("123456", "789123")).thenReturn(expectedAccount);
-//        when(cliPrompt.pin()).thenReturn("789123");
-//
-//        //Act
-//        Thread thread = new Thread(() -> welcomeScreen.show());
-//        thread.setDaemon(true);
-//        thread.start();
-//
-//        //Assert
-//        await()
-//            .timeout(10, TimeUnit.SECONDS)
-//            .untilAsserted(
-//                () -> verify(cliPrompt).promptGenericMessage("Account Number should only contain numbers\n")
-//            );
-//
-//        thread.interrupt();
-//    }
 }

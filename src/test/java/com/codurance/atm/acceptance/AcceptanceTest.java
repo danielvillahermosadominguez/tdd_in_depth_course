@@ -14,7 +14,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Scanner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -25,6 +24,18 @@ public class AcceptanceTest {
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
+
+    private String expectedOutput = "Enter Account Number: Enter PIN: Account number 123456, balance 100\n" +
+        "1. Withdraw\n" +
+        "2. Fund Transfer\n" +
+        "3. Exit\n" +
+        "Please choose option [3]: Account number {0}, balance {1}\n" +
+        "1. $10\n" +
+        "2. $50\n" +
+        "3. $100\n" +
+        "4. Other\n" +
+        "5. Back\n" +
+        "Please choose option [5]: Your current balance is 50";
 
     @BeforeEach
     public void setUpStreams() {
@@ -46,10 +57,12 @@ public class AcceptanceTest {
     void acceptance_test_of_the_course() {
         //Given there's an Account with number 123456, PIN 123456 and balance 100
         InputStream sysInBackup = System.in;
-        System.setIn(new ByteArrayInputStream("123456\n123456\n1\n".getBytes()));
-        Account expectedAccount = new Account("123456", 100);
+        System.setIn(new ByteArrayInputStream("123456\n123456\n1\n1\n".getBytes()));
+        Account initialAccount = new Account("123456", 100);
+        Account expectedAccount = new Account("123456", 50);
         AccountService accountService = mock();
-        when(accountService.findBy("123456", "123456")).thenReturn(expectedAccount);
+        when(accountService.findBy("123456", "123456")).thenReturn(initialAccount);
+        when(accountService.withdraw("123456", 50)).thenReturn(expectedAccount);
         //And I entered 123456 as Account number and 123456 as PIN
         AtmSimulator atmSimulator = new AtmSimulator(
             new WelcomeScreen(
@@ -59,36 +72,7 @@ public class AcceptanceTest {
         //When I withdraw 50
 
         //Then I should see the message "Your current balance is 50".
-        assertEquals("Your current balance is 50", getFormattedOutput());
-        System.setIn(sysInBackup);
-    }
-
-    @Test
-    void test_of_input_with_BytesArrayInputStream1() {
-
-        InputStream sysInBackup = System.in;
-
-        System.setIn(new ByteArrayInputStream("123456\n123456\n".getBytes()));
-        Scanner scanner = new Scanner(System.in);
-        String result = scanner.next();
-        String result2 = scanner.next();
-        assertEquals("123456", result);
-        assertEquals("123456", result2);
-        System.setIn(sysInBackup);
-    }
-
-    @Test
-    void test_of_input_with_BytesArrayInputStream2() {
-
-        InputStream sysInBackup = System.in;
-
-        System.setIn(new ByteArrayInputStream("123456\naaa\n".getBytes()));
-        Scanner scanner = new Scanner(System.in);
-        String result = scanner.next();
-        System.setIn(new ByteArrayInputStream("123456\n".getBytes()));
-        String result2 = scanner.next();
-        assertEquals("123456", result);
-        assertEquals("123456", result2);
+        assertEquals(expectedOutput, getFormattedOutput());
         System.setIn(sysInBackup);
     }
 }
