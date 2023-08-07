@@ -2,9 +2,9 @@ package com.codurance.atm.account;
 
 public class Account {
     private AccountNumber accountNumber;
-    private Integer balance;
+    private AccountBalance balance;
 
-    public Account(AccountNumber accountNumber, Integer balance) {
+    public Account(AccountNumber accountNumber, AccountBalance balance) {
 
         this.accountNumber = accountNumber;
         this.balance = balance;
@@ -15,6 +15,6 @@ public class Account {
     }
 
     public String balance() {
-        return balance.toString();
+        return balance.getValue().toString();
     }
 }

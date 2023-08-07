@@ -1,10 +1,7 @@
 package com.codurance.atm.acceptance;
 
 import com.codurance.atm.AtmSimulator;
-import com.codurance.atm.account.Account;
-import com.codurance.atm.account.AccountNumber;
-import com.codurance.atm.account.AccountService;
-import com.codurance.atm.account.NotValidAccountNumber;
+import com.codurance.atm.account.*;
 import com.codurance.atm.infrastructure.CliPrompt;
 import com.codurance.atm.infrastructure.ConsolePrinter;
 import com.codurance.atm.screens.WelcomeScreen;
@@ -65,8 +62,8 @@ public class AcceptanceTest {
         //And I entered 123456 as Account number and 123456 as PIN
         System.setIn(new ByteArrayInputStream("123456\n123456\n1\n1\n".getBytes()));
         AccountNumber accountNumber = new AccountNumber(ACCOUNT_NUMBER);
-        Account initialAccount = new Account(accountNumber, 100);
-        Account expectedAccount = new Account(accountNumber, 50);
+        Account initialAccount = new Account(accountNumber, new AccountBalance(100));
+        Account expectedAccount = new Account(accountNumber, new AccountBalance(50));
         AccountService accountService = mock();
         when(accountService.findBy(any(), any())).thenReturn(initialAccount);
         when(accountService.withdraw(any(), anyInt())).thenReturn(expectedAccount);

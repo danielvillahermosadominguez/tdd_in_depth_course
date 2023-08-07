@@ -1,9 +1,6 @@
 package com.codurance.atm.tld;
 
-import com.codurance.atm.account.Account;
-import com.codurance.atm.account.AccountNumber;
-import com.codurance.atm.account.AccountService;
-import com.codurance.atm.account.NotValidAccountNumber;
+import com.codurance.atm.account.*;
 import com.codurance.atm.infrastructure.CliPrompt;
 import com.codurance.atm.screens.Screen;
 import com.codurance.atm.screens.ScreenEnum;
@@ -22,7 +19,7 @@ public class WelcomeScreenShould {
         CliPrompt cliPrompt = mock(CliPrompt.class);
         String accountNumberText = "123456";
         AccountNumber accountNumber = new AccountNumber(accountNumberText);
-        Account expectedAccount = new Account(accountNumber, 1000);
+        Account expectedAccount = new Account(accountNumber, new AccountBalance(1000));
         AccountService accountService = mock(AccountService.class);
         WelcomeScreen welcomeScreen = new WelcomeScreen(cliPrompt, accountService);
         when(cliPrompt.accountNumber()).thenReturn(accountNumberText);
