@@ -59,35 +59,19 @@ TPP: https://en.wikipedia.org/wiki/Transformation_Priority_Premise
 - (variable → assignment) replacing the value of a variable.
 - (case) adding a case (or else) to an existing switch or if
 
-## ATM - TDD II: Account Balance. Specific requirements decisions
+## Mars Rover Kata
 
-The decisions are based on the original code. Where we can see the balance is an integer in the
-Domain entity "Account"
+Develop an API that moves a rover around on a grid.
+Rules.
 
-```java
-public class Account {
-    ..
-    private Integer balance;
+1. You are given the initial starting point (0,0,N)
+2. 0,0 are X,Y co-ordinates on a grid of (10,10)
+3. N is the direction it is facing (i.e. N, S, E, W)
+4. L and R allow the rover to rotate left and right.
+5. M allows the rover to move one point in the current direction
+6. The rover receives a char array of commands e.g. RMMLM and returns the finishing point after the moves e.g 2:1:N
+7. The rover wraps around if it reaches the end of the grid.
+8. The grid may have obstacles. If a given sequence of commands encounters an obstacle, the rover moves up to the las
+   possible point and reports the obstacle e.g. 0:2:2:N
 
-    public Account(String accountNumber, Integer balance) {
-        ..
-        this.balance = balance;
-    }
-
-    ..
-
-    public String balance() {
-        return balance.toString();
-    }
-}
-```
-
-To apply TDD for this change, I think we should reuse the Acceptation Test. In my case, I have seen this
-acceptance test doesn't work because the code is not working because there are several things not implemented.
-
-In addition, I think it makes not sense to apply TDD to anemic classes which they didn't have any behaviour. That
-is:
-
-- Account class. It is an entity class, there is not behaviour.
-- Balance class. (The)
 
